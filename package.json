@@ -1,0 +1,18 @@
+{
+  "name": "polisi-skena",
+  "version": "0.0.1",
+  "description": "Trial for Spotify Web API",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "type": "module",
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.17.1",
+    "node-fetch": "^3.2.0",
+    "nodemon": "^2.0.15",
+    "pug": "^3.0.2"
+  },
+  "license": "MIT"
+}

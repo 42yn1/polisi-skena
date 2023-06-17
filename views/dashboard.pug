@@ -1,0 +1,47 @@
+extends layout.pug
+    
+block content
+  .container
+    h1 Surat Keputusan
+    h2 Kepolisian Skena Republik Indonesia
+    h3 Menetapkan 
+    h1 #{user.id}
+    hr
+    
+    p   Memiliki selera musik 
+      b JELEK
+      |  dengan rincian sebagai berikut:
+    table 
+      each t in tracks
+        tr 
+          - var artist_name = t.artists[0].name
+          - var track_name = t.name
+          - var track_preview = t.preview_url
+          - var artist_id = t.artists[0].id
+          - var track_id = t.id 
+
+          td 
+            b #{artist_name} 
+          td #{track_name}
+    hr
+    img(src='/Spotify_Logo_RGB_Black.png' alt='Spotify Logo' width='10%')
+
+  
+  .download
+    button.custom-button(class='btn-download' onclick='downloadContainerContent()') Download Gambar
+
+
+
+  script.
+    function downloadContainerContent() {
+      var containerElement = document.querySelector('.container');
+      domtoimage.toBlob(containerElement)
+        .then(function(blob) {
+          var downloadLink = document.createElement('a');
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = 'sk_spotify.png';
+          downloadLink.click();
+        });
+    }
+
+
