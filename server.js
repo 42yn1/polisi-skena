@@ -8,7 +8,7 @@ app.set("view engine", "pug");
 
 app.use(express.static("public"));
 
-const redirect_uri = "http://localhost:3000/callback";
+const redirect_uri = "http://localhost:1312/callback";
 const client_id = "4f46fae3e96e4ebeb447100fb4d82188";
 const client_secret = "4e6a8f1aa3a64ab4abc964d07c8f39dc";
 
@@ -76,7 +76,7 @@ app.get("/dashboard", async (req, res) => {
   res.render("dashboard", { user: userInfo, tracks: tracks.items });
 });
 
-let listener = app.listen(3000, function () {
+let listener = app.listen(1312, function () {
   console.log(
     "Your app is listening on http://localhost:" + listener.address().port
   );
