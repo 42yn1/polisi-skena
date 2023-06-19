@@ -1,5 +1,5 @@
-import express from "express";
-import fetch from "node-fetch";
+const express = require("express");
+const fetch = require("node-fetch-commonjs");
 
 const app = express();
 
@@ -22,7 +22,7 @@ app.get("/authorize", (req, res) => {
   var auth_query_parameters = new URLSearchParams({
     response_type: "code",
     client_id: client_id,
-    scope: "user-top-read",
+    scope: "user-top-read user-top-read user-read-email user-read-private",
     redirect_uri: redirect_uri,
   });
 
@@ -53,6 +53,7 @@ app.get("/callback", async (req, res) => {
 
   const data = await response.json();
   global.access_token = data.access_token;
+  // console.log(data);
 
   res.redirect("/dashboard");
 });
@@ -65,15 +66,23 @@ async function getData(endpoint) {
     },
   });
 
-  const data = await response.json();
-  return data;
+  if (response.status === 200) {
+    const data = await response.json();
+    return data;
+  } else {
+    throw new Error("Gagal memuat data. Anda tidak terdaftar dalam Development Dashboard");
+  }
 }
 
 app.get("/dashboard", async (req, res) => {
-  const userInfo = await getData("/me");
-  const tracks = await getData("/me/top/tracks?time_range=short_term&limit=5");
+  try {
+    const userInfo = await getData("/me");
+    const tracks = await getData("/me/top/tracks?time_range=short_term&limit=5");
 
-  res.render("dashboard", { user: userInfo, tracks: tracks.items });
+    res.render("dashboard", { user: userInfo, tracks: tracks.items });
+  } catch (error) {
+    res.status(500).send("<h1 style='color: red;'>Gagal memuat data. Anda tidak terdaftar dalam Development Dashboard</h1>");
+  }
 });
 
 let listener = app.listen(1312, function () {
@@ -81,4 +90,3 @@ let listener = app.listen(1312, function () {
     "Your app is listening on http://localhost:" + listener.address().port
   );
 });
-
